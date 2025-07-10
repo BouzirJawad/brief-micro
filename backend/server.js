@@ -4,8 +4,9 @@ const connectDB = require("./config/db")
 require('dotenv').config()
 const briefRoutes = require("./routes/brief.routes")
 
+
 const app = express()
-const PORT = process.env.PORT || 7461
+const PORT = process.env.PORT || 7462
 
 app.use(cors())
 app.use(express.json())
@@ -14,6 +15,6 @@ connectDB()
 
 app.use("/api/briefs", briefRoutes)
 
-app.listen(PORT, 
+app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}`)
-)
+})

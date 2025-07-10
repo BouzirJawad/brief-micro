@@ -1,5 +1,3 @@
-const express = require("express");
-const router = express.Router();
 const Brief = require("../models/Brief");
 
 const createBrief = async (req, res) => {
@@ -70,22 +68,21 @@ const updateBrief = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message})
   }
-};
+}
 
 const deleteBrief = async (req, res) => {
     try {
-        const brief = await Brief.findOne(res.params.id)
+        const brief = await Brief.findById({ _id: req.params.id })
 
         if (!brief) {
-            return res.status(404).json({ message: "Brief not found!" })
+            return res.status(404).json({ error: "Skill not found" })
         }
 
         await Brief.findByIdAndDelete(req.params.id)
-        res.status(201).json({ message: "message deleted successfully!" })
+        res.status(201).json({ message: "Brief deleted successfully" })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
 }
 
-
-module.exports = { createBrief, getBrief, getBriefs, updateBrief, }
+module.exports = { createBrief, getBrief, getBriefs, updateBrief, deleteBrief }
