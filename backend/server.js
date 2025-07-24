@@ -1,14 +1,11 @@
 const express = require("express")
-const cors = require("cors")
 const connectDB = require("./config/db")
 require('dotenv').config()
 const briefRoutes = require("./routes/brief.routes")
 
-
 const app = express()
 const PORT = process.env.PORT || 7462
 
-app.use(cors())
 app.use(express.json())
 
 connectDB()
@@ -16,5 +13,5 @@ connectDB()
 app.use("/api/briefs", briefRoutes)
 
 app.listen(PORT, () => {
-    console.log(`Server is running on PORT ${PORT}`)
+    console.log(`Brief server is running on PORT ${PORT}`)
 })
