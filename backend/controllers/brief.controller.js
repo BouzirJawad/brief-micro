@@ -39,8 +39,9 @@ const getBriefs = async (req, res) => {
 };
 
 const getBrief = async (req, res) => {
+  const { briefId } = req.params;
   try {
-    const brief = await Brief.findById(req.params.id);
+    const brief = await Brief.findById(briefId);
 
     if (!brief) {
       return res.josn(404).josn({ message: "Brief not found!" });
@@ -53,9 +54,10 @@ const getBrief = async (req, res) => {
 };
 
 const updateBrief = async (req, res) => {
+  const { briefId } = req.params;
   try {
     const updatedBrief = await Brief.findByIdAndUpdate(
-      req.params.id,
+      briefId,
       { $set: req.body },
       { new: true, runValidators: true }
     );
@@ -64,25 +66,26 @@ const updateBrief = async (req, res) => {
       return res.status(404).json({ message: "Brief not found!" });
     }
 
-    res.status(201).json(updatedBrief)
+    res.status(201).json(updatedBrief);
   } catch (error) {
-    res.status(500).json({ error: error.message})
+    res.status(500).json({ error: error.message });
   }
-}
+};
 
 const deleteBrief = async (req, res) => {
-    try {
-        const brief = await Brief.findById({ _id: req.params.id })
+  const { briefId } = req.params;
+  try {
+    const brief = await Brief.findById(briefId);
 
-        if (!brief) {
-            return res.status(404).json({ error: "Skill not found" })
-        }
-
-        await Brief.findByIdAndDelete(req.params.id)
-        res.status(201).json({ message: "Brief deleted successfully" })
-    } catch (error) {
-        res.status(500).json({ error: error.message })
+    if (!brief) {
+      return res.status(404).json({ error: "Skill not found" });
     }
-}
 
-module.exports = { createBrief, getBrief, getBriefs, updateBrief, deleteBrief }
+    await Brief.findByIdAndDelete(briefId);
+    res.status(201).json({ message: "Brief deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { createBrief, getBrief, getBriefs, updateBrief, deleteBrief };
